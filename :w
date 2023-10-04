@@ -1,5 +1,5 @@
 # Import required libraries
-from tkinter import Tk, Text, Button, END
+from tkinter import *
 import re
 
 # Create an instance of tkinter frame or window
@@ -9,9 +9,8 @@ win = Tk()
 win.geometry("700x350")
 
 # Create a text widget
-my_clip = Text(win, height=15)
+my_clip= Text(win, height=15)
 my_clip.pack()
-
 
 def update_text():
     global my_clip
@@ -21,25 +20,24 @@ def update_text():
     lines = text.split("\n")
 
     # c_times = len(lines[0].split(" "))
-    c_times = max([len(re.findall('"([^"]*)"', x)) for x in lines])
+    c_times = len(re.findall('"([^"]*)"', lines[0]))
 
     out_text = "\\begin{tabular}" + "{" + (c_times * "|c") + "|}\n"
 
-    for line in lines:
+    for l in lines:
         single = "\t"
-        key = re.findall('"([^"]*)"', line)
+        key = re.findall('"([^"]*)"', l)
         for k in key:
-            single += k+" & "
-        single = single[:-3] + "\\\\ \n"
-        out_text += single
-
-    out_text += "\\end{tabular}"
+            single+=k+" & "
+        single=single[:-3] + "\\\\ \n"
+        out_text+=single
+    
+    out_text+= "\\end{tabular}"
 
     my_clip.insert(END, "\n"+out_text)
 
-
 # Create a button to paste the copied text from clipboard
-button = Button(win, text="Paste Here", command=update_text)
+button=Button(win, text= "Paste Here", command=update_text)
 button.pack()
 
 win.mainloop()
